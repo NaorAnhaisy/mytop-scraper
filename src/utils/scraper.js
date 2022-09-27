@@ -56,8 +56,14 @@ const scrapeMyTor = async () => {
         // await page.waitForSelector("body > div > div[class='w3-row-padding w3-grayscale'] > center", {visible: true})
         // await page.screenshot({ path: `testresult-${day}-${month}.png`, fullPage: true });
 
-        // Getting the left hours div, which contains whether no hour left or what hours left for that day:
 
+        const spanTexts = page.$$eval("body > div > div[class='w3-row-padding w3-grayscale'] > center a", spans => {
+          spans.map(span => span.innerText)
+        });
+
+        console.log(spanTexts)
+
+        // Getting the left hours div, which contains whether no hour left or what hours left for that day:
         const leftHoursContainer = await page.$eval("body > div > div[class='w3-row-padding w3-grayscale'] > center",
           el => el.textContent);
 
