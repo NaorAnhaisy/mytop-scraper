@@ -1,3 +1,3 @@
-const USER_TO_EMAIL = process.env.RECIVERS_EMAIL;
+const USERS_TO_EMAIL = process.env.EMAIL_RECIVERS.split(',');
 
-module.exports = { USER_TO_EMAIL };
+module.exports = { USERS_TO_EMAIL };

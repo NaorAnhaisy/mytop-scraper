@@ -50,42 +50,33 @@ const scrapeMyTor = async () => {
         await page.keyboard.type(haircutDatePickerString);
 
         // Enters to the haircut date schedule:
-
         await page.keyboard.press('Enter');
         await page.waitForNavigation();
-        // await page.waitForSelector("body > div > div[class='w3-row-padding w3-grayscale'] > center", {visible: true})
-        // await page.screenshot({ path: `testresult-${day}-${month}.png`, fullPage: true });
 
+        // Gets all available links of appointments:
+        const hrefs = await page.$$eval(
+          "body > div > div[class='w3-row-padding w3-grayscale'] > center a",
+          all_a_tags => all_a_tags.map(a => {
+            return {
+              "link": a.href, "time": a.innerText
+            }
+          })
+        );
 
-        const spanTexts = page.$$eval("body > div > div[class='w3-row-padding w3-grayscale'] > center a", spans => {
-          spans.map(span => span.innerText)
-        });
+        if (hrefs && hrefs.length) {
+          console.log(`Found some matching hours:`, hrefs);
 
-        console.log(spanTexts)
-
-        // Getting the left hours div, which contains whether no hour left or what hours left for that day:
-        const leftHoursContainer = await page.$eval("body > div > div[class='w3-row-padding w3-grayscale'] > center",
-          el => el.textContent);
-
-        const leftHoursCondition = leftHoursContainer.includes("מצטער") ||
-          (leftHoursContainer.includes("תורים זמינים") && leftHoursContainer.includes("אין")) ||
-          (leftHoursContainer.includes("תורים זמינים") && leftHoursContainer.includes("לא"));
-
-        if (leftHoursCondition) {
-          console.log(`Fuck ${day}-${month}`);
-        } else {
-          const timeRegex = /([0-1]?[0-9]|2[0-3]):[0-5][0-9]/g;
-          const leftHours = leftHoursContainer.match(timeRegex);
-          console.log(`Found some matching hours:`, leftHours);
-
-          leftHours.forEach(leftHour => {
+          hrefs.forEach(leftHour => {
             freeDates.push({
               "date": haircutDay,
               "dayColor": getColorOfDay(haircutDay.getDay()),
               "hebrewDay": getDayOfWeekInHebrew(haircutDay.getDay()),
-              "time": leftHour
+              "time": leftHour.time,
+              "link": leftHour.link
             });
           });
+        } else {
+          console.log(`Fuck ${day}/${month}`);
         }
       } catch (error) {
         console.error(`Error while trying to get appointment for date ${haircutDatePickerString}`);

@@ -1,22 +1,23 @@
 const nodemailer = require('nodemailer');
 const { formatNewAppointmentsContent, formatNewAppointmentsContentHTML } = require('../helpers/mailHelper');
-const { USER_TO_EMAIL } = require('../config');
+const { USERS_TO_EMAIL } = require('../config');
 
 async function sendNewAppointmentsToUser(newAppointments) {
-    await sendMailToUser(USER_TO_EMAIL,
+    await sendMailToUser(USERS_TO_EMAIL,
         "תורים חדשים נמצאו זמינים אצל נתנאל",
         formatNewAppointmentsContent(newAppointments),
-        formatNewAppointmentsContentHTML(newAppointments));
+        formatNewAppointmentsContentHTML(newAppointments))
+        .catch(err => console.error(err));
 }
 
 /**
  * Sending mail to user.
- * @param {String} userEmail email to send the email to.
+ * @param {String} reciversEmail email to send the email to.
  * @param {String} title title of email (subject)
  * @param {String} content content of the email (text)
  * @param {String} htmlContnt content of the email (html)
  */
-async function sendMailToUser(userEmail, title, content, htmlContnt) {
+async function sendMailToUser(reciversEmail, title, content, htmlContnt) {
     let transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
@@ -26,7 +27,7 @@ async function sendMailToUser(userEmail, title, content, htmlContnt) {
     });
 
     let mailOptions = {
-        to: userEmail,
+        to: reciversEmail,
         from: process.env.EMAIL_USER,
         subject: title,
         text: content,
@@ -35,7 +36,7 @@ async function sendMailToUser(userEmail, title, content, htmlContnt) {
 
     try {
         await transporter.sendMail(mailOptions);
-        console.log(`Email sent successfully to ${userEmail}.`);
+        console.log(`Email sent successfully to ${reciversEmail}.`);
     } catch (error) {
         console.error("Error while trying to send email:", mailOptions, error);
     }
