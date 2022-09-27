@@ -1,8 +1,8 @@
-// const puppeteer = require('puppeteer');
-const puppeteer = require('puppeteer-extra');
-const StealthPlugin = require('puppeteer-extra-plugin-stealth');
+const puppeteer = require('puppeteer');
+// const puppeteer = require('puppeteer-extra');
+// const StealthPlugin = require('puppeteer-extra-plugin-stealth');
 const { getDaysBetweenDates, getDayOfWeekInHebrew, getColorOfDay } = require('../helpers/dateHelper');
-puppeteer.use(StealthPlugin());
+// puppeteer.use(StealthPlugin());
 
 const GOOD_DAYS_TO_HAIRCUT = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
 const NETANEL_WEBSITR_URL = 'https://mytor.co.il/tor.php?i=bmV0YW5lbA==&s=NjQwNQ==&lang=he';
@@ -14,8 +14,8 @@ const NETANEL_WEBSITR_URL = 'https://mytor.co.il/tor.php?i=bmV0YW5lbA==&s=NjQwNQ
 const scrapeMyTor = async () => {
   let freeDates = [];
 
-  const PUPPETEER_LUNCH_DEV_ARGS = { headless: true };
-  const PUPPETEER_LUNCH_PROD_ARGS = { args: ['--no-sandbox'] };
+  const PUPPETEER_LUNCH_DEV_ARGS = { headless: false };
+  const PUPPETEER_LUNCH_PROD_ARGS = { headless: true, args: ['--no-sandbox'] };
 
   const args = process.env.NODE_ENV === 'development' ?
     PUPPETEER_LUNCH_DEV_ARGS : PUPPETEER_LUNCH_PROD_ARGS;
@@ -51,6 +51,7 @@ const scrapeMyTor = async () => {
 
       try {
         // Insert the haircut date:
+        await page.waitForSelector('input[name="datef"]', {timeout: 15000});
         await page.focus('input[name="datef"]');
         console.log(`Typing ${haircutDatePickerString} inside date picker date...`);
         await page.keyboard.type(haircutDatePickerString);
