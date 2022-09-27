@@ -8,7 +8,7 @@ var isScheduleScrapeRunning = false;
 
 // Schedule scrape the website every 15 minutes (*/15 * * * *)
 // For testing: */10 * * * * *
-schedule.scheduleJob('*/10 * * * * *', async function () {
+schedule.scheduleJob('*/15 * * * *', async function () {
     if (!isScheduleScrapeRunning) {
         isScheduleScrapeRunning = true;
         console.log('Start schedule scarpe the website:');
@@ -19,7 +19,7 @@ schedule.scheduleJob('*/10 * * * * *', async function () {
             let newAppointments = getNewAppointementsOnly(freeDates, knownAppointments);
             newAppointments.sort((a, b) => parseFloat(a.date) - parseFloat(b.date));
             if (newAppointments.length) {
-                // await appointmentsService.saveAppointments(newAppointments);
+                await appointmentsService.saveAppointments(newAppointments);
                 await sendNewAppointmentsToUser(newAppointments);
             }
 
