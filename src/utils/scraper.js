@@ -56,10 +56,14 @@ const scrapeMyTor = async () => {
         console.log(`Typing ${haircutDatePickerString} inside date picker date...`);
         await page.keyboard.type(haircutDatePickerString);
 
+        console.log("Typed");
+
         // Enters to the haircut date schedule:
         await page.keyboard.press('Enter');
+        console.log("Enter pressed.")
         await page.waitForNavigation();
 
+        console.log("Done waitForNavigation.")
         // Gets all available links of appointments:
         const hrefs = await page.$$eval(
           "body > div > div[class='w3-row-padding w3-grayscale'] > center a",
