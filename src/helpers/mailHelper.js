@@ -15,7 +15,7 @@ function formatNewAppointmentsContent(newAppointments) {
 function formatNewAppointmentsContentHTML(newAppointments) {
     let content = "<div dir='rtl'><h3>תורים חדשים זמינים:</h3>";
 
-    content += "<table border='1' cellpadding='8'><tr><th>תאריך</th><th>יום</th><th>שעה</th></tr>"
+    content += "<table border='1' cellpadding='8'><tr><th> תאריך </th><th> יום </th><th> שעה </th></tr>"
     newAppointments.forEach(appointment => {
         content += "<tr>"
         content += "<td>" + moment(appointment.date).format('DD/MM/YYYY') + "</td>"
