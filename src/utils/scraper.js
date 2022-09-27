@@ -14,7 +14,13 @@ const NETANEL_WEBSITR_URL = 'https://mytor.co.il/tor.php?i=bmV0YW5lbA==&s=NjQwNQ
 const scrapeMyTor = async () => {
   let freeDates = [];
 
-  await puppeteer.launch({ headless: true }).then(async browser => {
+  const PUPPETEER_LUNCH_DEV_ARGS = { headless: true };
+  const PUPPETEER_LUNCH_PROD_ARGS = { args: ['--no-sandbox'] };
+
+  const args = process.env.NODE_ENV === 'development' ?
+    PUPPETEER_LUNCH_DEV_ARGS : PUPPETEER_LUNCH_PROD_ARGS;
+
+  await puppeteer.launch(args).then(async browser => {
     console.log('Starting...');
 
     // Starting the browser and opens the page:
