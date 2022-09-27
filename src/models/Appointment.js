@@ -5,10 +5,6 @@ const AppointmentsSchema = mongoose.Schema({
         type: Date,
         required: true
     },
-    hebrewDay: {
-        type: String,
-        required: true
-    },
     time: {
         type: String,
         required: true

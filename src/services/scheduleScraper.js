@@ -2,13 +2,13 @@ const schedule = require('node-schedule');
 const scraper = require('../utils/scraper');
 const appointmentsService = require('./appointmentsService');
 const { getNewAppointementsOnly } = require('../helpers/arrayHelper');
-const { sendMailToUser } = require('./mailerService');
+const { sendNewAppointmentsToUser } = require('./mailerService');
 const { formatNewAppointmentsContent, formatNewAppointmentsContentHTML } = require('../helpers/mailHelper');
-const { USER_TO_EMAIL } = require('../config');
 
 var isScheduleScrapeRunning = false;
 
-// Schedule scrape the website every 20 minutes (*/20 * * * *)  */10 * * * * *
+// Schedule scrape the website every 20 minutes (*/20 * * * *)
+// For testing: */10 * * * * *
 schedule.scheduleJob('*/10 * * * * *', async function () {
     if (!isScheduleScrapeRunning) {
         isScheduleScrapeRunning = true;
@@ -17,15 +17,19 @@ schedule.scheduleJob('*/10 * * * * *', async function () {
         try {
             let freeDates = await scraper.scrapeMyTor();
             let knownAppointments = await appointmentsService.getAll();
+            console.log("freeDates")
+            console.log(freeDates)
+            console.log("knownAppointments")
+            console.log(knownAppointments)
             let newAppointments = getNewAppointementsOnly(freeDates, knownAppointments);
-            console.log(newAppointments)
             newAppointments.sort((a, b) => parseFloat(a.date) - parseFloat(b.date));
+            console.log("newAppointments")
             console.log(newAppointments)
-            // await appointmentsService.saveAppointments(newAppointments);
-            await sendMailToUser(USER_TO_EMAIL,
-                "תורים חדשים נמצאו זמינים אצל נתנאל",
-                formatNewAppointmentsContent(newAppointments),
-                formatNewAppointmentsContentHTML(newAppointments));
+            if (newAppointments.length) {
+                await appointmentsService.saveAppointments(newAppointments);
+                await sendNewAppointmentsToUser(newAppointments);
+            }
+
             console.log('Successfully scarped the website.');
         } catch (error) {
             console.error("Scarpe the website schedule failed: ", error, error.message);

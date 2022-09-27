@@ -1,4 +1,13 @@
 const nodemailer = require('nodemailer');
+const { formatNewAppointmentsContent, formatNewAppointmentsContentHTML } = require('../helpers/mailHelper');
+const { USER_TO_EMAIL } = require('../config');
+
+async function sendNewAppointmentsToUser(newAppointments) {
+    await sendMailToUser(USER_TO_EMAIL,
+        "תורים חדשים נמצאו זמינים אצל נתנאל",
+        formatNewAppointmentsContent(newAppointments),
+        formatNewAppointmentsContentHTML(newAppointments));
+}
 
 /**
  * Sending mail to user.
@@ -32,4 +41,4 @@ async function sendMailToUser(userEmail, title, content, htmlContnt) {
     }
 }
 
-exports.sendMailToUser = sendMailToUser;
+exports.sendNewAppointmentsToUser = sendNewAppointmentsToUser;

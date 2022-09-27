@@ -4,6 +4,7 @@ const { getDaysDiff } = require('../helpers/dateHelper');
 const DAYS_PASSED_TO_DELETE_APPOINTMENT = 2;
 
 // Schedule delete old appointment every midnight (0 0 * * *)
+// For testing: */10 * * * * *
 schedule.scheduleJob('0 0 * * *', async function () {
     console.log('Start schedule delete old appointments:');
 
