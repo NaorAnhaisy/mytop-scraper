@@ -58,4 +58,4 @@
 #     - ssh -i $SSH_PRIVATE_KEY -o StrictHostKeyChecking=no root@$DEPLOY_SERVER "docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY"
 #     - ssh -i $SSH_PRIVATE_KEY -o StrictHostKeyChecking=no root@$DEPLOY_SERVER "docker pull $CI_REGISTRY_IMAGE:latest"
 #     # run new container
-#     - ssh -i $SSH_PRIVATE_KEY -o StrictHostKeyChecking=no root@$DEPLOY_SERVER "docker run -d --restart unless-stopped --name $CI_PROJECT_NAME -p 5000:5000 -e "variableData=Docker-Run-Command" $CI_REGISTRY_IMAGE:latest"
+#     - ssh -i $SSH_PRIVATE_KEY -o StrictHostKeyChecking=no root@$DEPLOY_SERVER "docker run -d --restart unless-stopped --name $CI_PROJECT_NAME -p 4000:4000 -e "variableData=Docker-Run-Command" $CI_REGISTRY_IMAGE:latest"

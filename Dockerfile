@@ -16,5 +16,5 @@ RUN npm install pm2 -g
 # Bundle app source
 COPY . .
 
-EXPOSE 5000
+EXPOSE 4000
 CMD ["pm2-runtime", "./bin/www"]
