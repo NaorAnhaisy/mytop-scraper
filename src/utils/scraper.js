@@ -1,7 +1,7 @@
 // const puppeteer = require('puppeteer');
 const puppeteer = require('puppeteer-extra');
 const StealthPlugin = require('puppeteer-extra-plugin-stealth');
-const { getDaysBetweenDates, getDayOfWeekInHebrew } = require('../helpers/dateHelper');
+const { getDaysBetweenDates, getDayOfWeekInHebrew, getColorOfDay } = require('../helpers/dateHelper');
 puppeteer.use(StealthPlugin());
 
 const GOOD_DAYS_TO_HAIRCUT = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
@@ -75,6 +75,7 @@ const scrapeMyTor = async () => {
           leftHours.forEach(leftHour => {
             freeDates.push({
               "date": haircutDay,
+              "dayColor": getColorOfDay(haircutDay.getDay()),
               "hebrewDay": getDayOfWeekInHebrew(haircutDay.getDay()),
               "time": leftHour
             });

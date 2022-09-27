@@ -50,10 +50,3 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/a
 ### Deployment
 
 see `npm run prod` above
-
-## TODO List:
-
-* Add DB to save found appointments
-* Every 20 minutes make a cronjob to scrap the website for new appointments
-* Add email send of the recent appointments
-* Add cronjob every day to delete old appointments

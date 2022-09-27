@@ -18,6 +18,9 @@ schedule.scheduleJob('*/10 * * * * *', async function () {
             let freeDates = await scraper.scrapeMyTor();
             let knownAppointments = await appointmentsService.getAll();
             let newAppointments = getNewAppointementsOnly(freeDates, knownAppointments);
+            console.log(newAppointments)
+            newAppointments.sort((a, b) => parseFloat(a.date) - parseFloat(b.date));
+            console.log(newAppointments)
             // await appointmentsService.saveAppointments(newAppointments);
             await sendMailToUser(USER_TO_EMAIL,
                 "תורים חדשים נמצאו זמינים אצל נתנאל",

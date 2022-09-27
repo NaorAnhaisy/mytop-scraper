@@ -23,8 +23,8 @@ function getDaysBetweenDates(start, end, dayName) {
 }
 
 function getDayOfWeekInHebrew(dayOfWeekIndex) {
-    var days = [ "ראשון", "שני", "שלישי", "רביעי", "חמישי", "שישי", "שבת" ];
-    return days[dayOfWeekIndex];
+    var DAYS_HEBREW = [ "ראשון", "שני", "שלישי", "רביעי", "חמישי", "שישי", "שבת" ];
+    return DAYS_HEBREW[dayOfWeekIndex];
 }
 
 function getDaysDiff (date_1, date_2) {
@@ -33,6 +33,12 @@ function getDaysDiff (date_1, date_2) {
     return TotalDays;
 }
 
+function getColorOfDay(dayOfWeekIndex) {
+    var DAYS_COLORS = ["#ff4646", "#ffff3f", "#ffc0cb", "#8fff8f", "#ffc761", "#c6e7ff", "#e4abff"];
+    return DAYS_COLORS[dayOfWeekIndex];
+}
+
 exports.getDaysBetweenDates = getDaysBetweenDates;
 exports.getDayOfWeekInHebrew = getDayOfWeekInHebrew;
 exports.getDaysDiff = getDaysDiff;
+exports.getColorOfDay = getColorOfDay;
