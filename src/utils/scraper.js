@@ -58,6 +58,8 @@ const scrapeMyTor = async () => {
 
         console.log("Typed");
 
+        console.log(await page.content())
+
         // Enters to the haircut date schedule:
         await page.keyboard.press('Enter');
         console.log("Enter pressed.")
