@@ -59,12 +59,8 @@ const scrapeMyTor = async () => {
           document.querySelector('input[name="datef"]').value = haircutDatePickerString;
         }, haircutDatePickerString);
 
-        // await page.$eval('input[name="datef"]', el => el.value = haircutDatePickerString);
-        // await page.keyboard.type(haircutDatePickerString);
-
         // Enters to the haircut date schedule:
         await page.keyboard.press('Enter');
-        // console.log("Enter pressed.")
         await page.waitForNavigation();
 
         // Gets all available links of appointments:
@@ -106,12 +102,6 @@ const scrapeMyTor = async () => {
   });
 
   return freeDates;
-}
-
-function delay(time) {
-  return new Promise(function (resolve) {
-    setTimeout(resolve, time)
-  });
 }
 
 module.exports.scrapeMyTor = scrapeMyTor;
