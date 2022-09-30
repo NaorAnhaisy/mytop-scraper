@@ -15,11 +15,11 @@ schedule.scheduleJob('0 0 * * *', async function () {
         let toBeDeletedAppointmentsIDs = [];
         let allAppointments = await appointmentsService.getAll();
         allAppointments.forEach(appointment => {
-            console.log(getDaysDiff(new Date(), appointment.date))
             if (getDaysDiff(new Date(), appointment.date) > DAYS_PASSED_TO_DELETE_APPOINTMENT) {
                 toBeDeletedAppointmentsIDs.push(appointment._id);
             }
         });
+
         await appointmentsService.deleteArrayOfAppointments(toBeDeletedAppointmentsIDs);
         console.log('Successfully deleteded old appointments.');
     } catch (error) {

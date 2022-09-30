@@ -44,17 +44,14 @@ const scrapeMyTor = async () => {
 
     // Loops through all haircut days available:
     for (const haircutDay of haircutDaysArr) {
-      console.log("Calculate date...")
       const day = ("0" + (haircutDay.getUTCDate())).slice(-2);
       const month = ("0" + (haircutDay.getMonth() + 1)).slice(-2);
       const year = haircutDay.getUTCFullYear();
-      console.log("Calculate date done...")
-      const haircutDatePickerString = day + '-' + month + '-' + year;
-      console.log(haircutDatePickerString)
+      const haircutDatePickerString = year + '-' + month + '-' + day;
 
       try {
         // Insert the haircut date:
-        await page.waitForSelector('input[name="datef"]', {timeout: 15000});
+        await page.waitForSelector('input[name="datef"]', { timeout: 15000 });
 
         console.log(`Typing ${haircutDatePickerString} inside date picker date...`);
         await page.focus('input[name="datef"]');
@@ -93,7 +90,7 @@ const scrapeMyTor = async () => {
             });
           });
         } else {
-          console.log(`Fuck ${day}/${month}`);
+          console.log(`Fuck ${day}/${month}/${year}`);
         }
       } catch (error) {
         console.error(`Error while trying to get appointment for date ${haircutDatePickerString}`);
@@ -109,6 +106,12 @@ const scrapeMyTor = async () => {
   });
 
   return freeDates;
+}
+
+function delay(time) {
+  return new Promise(function (resolve) {
+    setTimeout(resolve, time)
+  });
 }
 
 module.exports.scrapeMyTor = scrapeMyTor;
