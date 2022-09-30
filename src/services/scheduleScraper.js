@@ -6,9 +6,9 @@ const { sendNewAppointmentsToUser } = require('./mailerService');
 
 var isScheduleScrapeRunning = false;
 
-// Schedule scrape the website every 15 minutes (*/15 * * * *)
+// Schedule scrape the website every 10 minutes (*/10 * * * *)
 // For testing: */10 * * * * *
-schedule.scheduleJob('*/15 * * * *', async function () {
+schedule.scheduleJob('*/10 * * * *', async function () {
     if (!isScheduleScrapeRunning) {
         isScheduleScrapeRunning = true;
         console.log('Start schedule scarpe the website:');
