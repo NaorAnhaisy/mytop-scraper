@@ -7,6 +7,9 @@ const { getDaysBetweenDates, getDayOfWeekInHebrew, getColorOfDay } = require('..
 const GOOD_DAYS_TO_HAIRCUT = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
 const NETANEL_WEBSITR_URL = 'https://mytor.co.il/tor.php?i=bmV0YW5lbA==&s=NjQwNQ==&lang=he';
 
+// For testing:
+// const NETANEL_WEBSITR_URL = 'https://mytor.co.il/tor.php?i=ZHZpcjIwMzQ0Mg==&s=NDI=&lang=he';
+
 /**
  * Scrape My Tor website of the barber shop.
  * Returns all the free dates of appointments the barber shop has available.

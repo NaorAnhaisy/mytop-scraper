@@ -17,9 +17,13 @@ schedule.scheduleJob('*/10 * * * *', async function () {
             let freeDates = await scraper.scrapeMyTor();
             let knownAppointments = await appointmentsService.getAll();
             let newAppointments = getNewAppointementsOnly(freeDates, knownAppointments);
-            newAppointments.sort((a, b) => parseFloat(a.date) - parseFloat(b.date));
+            console.log("newAppointments unsorted:")
+            console.log(newAppointments)
+            newAppointments.sort((a, b) => new Date(a.date) - new Date(b.date));
+            console.log("newAppointments sorted:")
+            console.log(newAppointments)
             if (newAppointments.length) {
-                await appointmentsService.saveAppointments(newAppointments);
+                // await appointmentsService.saveAppointments(newAppointments);
                 await sendNewAppointmentsToUser(newAppointments);
             } else {
                 console.log('No appointments found :/');
