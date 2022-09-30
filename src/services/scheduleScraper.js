@@ -22,7 +22,7 @@ schedule.scheduleJob('*/10 * * * *', async function () {
                 await appointmentsService.saveAppointments(newAppointments);
                 await sendNewAppointmentsToUser(newAppointments);
             } else {
-                console.log('No appointments found :/');
+                console.log('No new appointments found :/');
             }
 
             console.log('Schedule website scarping completed successfully.');
