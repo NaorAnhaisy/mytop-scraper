@@ -44,28 +44,32 @@ const scrapeMyTor = async () => {
 
     // Loops through all haircut days available:
     for (const haircutDay of haircutDaysArr) {
+      console.log("Calculate date...")
       const day = ("0" + (haircutDay.getUTCDate())).slice(-2);
       const month = ("0" + (haircutDay.getMonth() + 1)).slice(-2);
-      // const year = haircutDay.getUTCFullYear();
-      const haircutDatePickerString = day + '' + month;
+      const year = haircutDay.getUTCFullYear();
+      console.log("Calculate date done...")
+      const haircutDatePickerString = day + '-' + month + '-' + year;
+      console.log(haircutDatePickerString)
 
       try {
         // Insert the haircut date:
         await page.waitForSelector('input[name="datef"]', {timeout: 15000});
-        await page.focus('input[name="datef"]');
+
         console.log(`Typing ${haircutDatePickerString} inside date picker date...`);
-        await page.keyboard.type(haircutDatePickerString);
+        await page.focus('input[name="datef"]');
+        await page.evaluate((haircutDatePickerString) => {
+          document.querySelector('input[name="datef"]').value = haircutDatePickerString;
+        }, haircutDatePickerString);
 
-        console.log("Typed");
-
-        console.log(await page.content())
+        // await page.$eval('input[name="datef"]', el => el.value = haircutDatePickerString);
+        // await page.keyboard.type(haircutDatePickerString);
 
         // Enters to the haircut date schedule:
         await page.keyboard.press('Enter');
-        console.log("Enter pressed.")
+        // console.log("Enter pressed.")
         await page.waitForNavigation();
 
-        console.log("Done waitForNavigation.")
         // Gets all available links of appointments:
         const hrefs = await page.$$eval(
           "body > div > div[class='w3-row-padding w3-grayscale'] > center a",
@@ -99,7 +103,7 @@ const scrapeMyTor = async () => {
       }
     }
 
-    console.log(`All done ✨`);
+    console.log(`Scraping done ✨`);
 
     await browser.close();
   });
