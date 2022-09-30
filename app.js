@@ -9,7 +9,7 @@ var bodyParser = require("body-parser");
 
 var indexRouter = require("./src/routes/index");
 
-require("./src/services/scheduleScraper");
+// require("./src/services/scheduleScraper");
 require("./src/services/scheduleDeleteOldAppointments");
 
 const START_URL = "/server";

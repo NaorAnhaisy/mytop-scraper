@@ -38,7 +38,7 @@ function formatNewAppointmentsContentHTML(newAppointments) {
         content += "<td>" + appointment.time + "</td>"
         content += `<td style='text-align: center;'>
             <a href="${appointment.link}">
-                <img src="https://i.ibb.co/kx44tWM/74910.png" alt="לינק" style="width:20px;height:20px;">
+                <img src="https://i.ibb.co/tXcWzjG/href-To-Tor.png" alt="לינק" style="width:20px;height:20px;">
             </a>
         </td>`
         content += "</tr>"
