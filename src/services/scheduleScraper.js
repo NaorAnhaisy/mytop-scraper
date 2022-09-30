@@ -10,10 +10,10 @@ var isScheduleScrapeRunning = false;
 // For testing: */10 * * * * *
 schedule.scheduleJob('*/10 * * * *', async function () {
     if (!isScheduleScrapeRunning) {
-        isScheduleScrapeRunning = true;
-        console.log('Start schedule scarpe the website:');
+        console.log('Start schedule website scarping:');
 
         try {
+            isScheduleScrapeRunning = true;
             let freeDates = await scraper.scrapeMyTor();
             let knownAppointments = await appointmentsService.getAll();
             let newAppointments = getNewAppointementsOnly(freeDates, knownAppointments);
@@ -21,15 +21,16 @@ schedule.scheduleJob('*/10 * * * *', async function () {
             if (newAppointments.length) {
                 await appointmentsService.saveAppointments(newAppointments);
                 await sendNewAppointmentsToUser(newAppointments);
+            } else {
+                console.log('No appointments found :/');
             }
 
-            console.log('Successfully scarped the website.');
+            console.log('Schedule website scarping completed successfully.');
         } catch (error) {
-            console.error("Scarpe the website schedule failed: ", error, error.message);
+            console.error("Schedule website scarping schedule failed: ", error, error.message);
         } finally {
-            console.log('End scarping the website schedule.');
+            console.log('End schedule website scarping.');
+            isScheduleScrapeRunning = false;
         }
-
-        isScheduleScrapeRunning = false;
     }
 });
