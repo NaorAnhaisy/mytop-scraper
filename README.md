@@ -53,7 +53,8 @@ see `npm run prod` above
 
 
 ### Env variables:
-* DB_CONNECTION - Your MongoDB connection string
+* DB_CONNECTION_DEV - Your development MongoDB connection string
+* DB_CONNECTION_PROD - Your production MongoDB connection string
 * EMAIL_USER - Email username
 * EMAIL_APP_PASS - Authontication to email via password
 * EMAIL_RECIVERS - List of recievers emails, devided by ','.

@@ -30,9 +30,13 @@ app.use(cookieParser());
 app.use(START_URL + "/public", express.static(path.join(__dirname, "../public/views")));
 app.use(START_URL + "/", indexRouter);
 
+const dbConnection = process.env.NODE_ENV === 'production' ?
+  process.env.DB_CONNECTION_PROD :
+  process.env.DB_CONNECTION_DEV;
+
 // Connect to MongoDB
 mongoose.connect(
-  process.env.DB_CONNECTION,
+  dbConnection,
   {
     useNewUrlParser: true,
     useUnifiedTopology: true
@@ -46,7 +50,7 @@ mongoose.connection.on('connected', function () {
 });
 
 // If the connection throws an error
-mongoose.connection.on('error',function (err) {
+mongoose.connection.on('error', function (err) {
   console.error('MongoDB connection error: ', err);
 });
 
@@ -56,7 +60,7 @@ mongoose.connection.on('disconnected', function () {
 });
 
 // If the Node process ends, close the Mongoose connection
-process.on('SIGINT', function() {
+process.on('SIGINT', function () {
   mongoose.connection.close(function () {
     console.log('MongoDB connection disconnected through app termination.');
     process.exit(0);
