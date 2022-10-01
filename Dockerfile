@@ -1,7 +1,7 @@
 FROM node:16
 
 # Create app directory
-WORKDIR /app
+WORKDIR /var/www/mytor-docker
 
 # Install app dependencies
 # A wildcard is used to ensure both package.json AND package-lock.json are copied
