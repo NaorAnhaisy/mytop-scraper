@@ -20,8 +20,13 @@ schedule.scheduleJob('0 0 * * *', async function () {
             }
         });
 
-        await appointmentsService.deleteArrayOfAppointments(toBeDeletedAppointmentsIDs);
-        console.log('Successfully deleteded old appointments.');
+        if (toBeDeletedAppointmentsIDs && toBeDeletedAppointmentsIDs.length) {
+            await appointmentsService.deleteArrayOfAppointments(toBeDeletedAppointmentsIDs);
+            console.log(`Successfully deleteded all ${toBeDeletedAppointmentsIDs.length} old appointments.`);
+        } else {
+            console.log("Not found any old enough appointments to delete.");
+        }
+
     } catch (error) {
         console.error("Delete old appointments schedule failed: ", error, error.message);
     } finally {
