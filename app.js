@@ -32,7 +32,7 @@ app.use(cookieParser());
 app.use(START_URL + "/public", express.static(path.join(__dirname, "../public/views")));
 app.use(START_URL + "/", indexRouter);
 app.use(START_URL + "/appointments", appointmentsRouter);
-app.use(START_URL + "/recievers", recieversRouter);
+// app.use(START_URL + "/recievers", recieversRouter);
 
 const dbConnection = process.env.NODE_ENV === 'production' ?
   process.env.DB_CONNECTION_PROD :
