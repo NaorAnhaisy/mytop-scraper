@@ -8,7 +8,7 @@ var isScheduleScrapeRunning = false;
 
 // Schedule scrape the website every 10 minutes (*/10 * * * *)
 // For testing: */10 * * * * *
-schedule.scheduleJob('*/10 * * * * *', async function () {
+schedule.scheduleJob('*/10 * * * *', async function () {
     if (!isScheduleScrapeRunning) {
         console.log('Start schedule website scarping:');
 
