@@ -42,4 +42,6 @@ async function sendMailToUser(reciversEmail, title, content, htmlContnt) {
     }
 }
 
-exports.sendNewAppointmentsToUser = sendNewAppointmentsToUser;
+module.exports = {
+    sendNewAppointmentsToUser,
+};

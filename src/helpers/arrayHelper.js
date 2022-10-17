@@ -1,9 +1,11 @@
+const { checkTwoDatesEqual } = require('./dateHelper');
+
 function getNewAppointementsOnly(freeDates, knownAppointments) {
     let res = [];
     for (const freeDatesItem of freeDates) {
         let isFound = false;
         for (const knownAppointmentsItem of knownAppointments) {
-            if (freeDatesItem.date === knownAppointmentsItem.date &&
+            if (checkTwoDatesEqual(freeDatesItem.date, knownAppointmentsItem.date) &&
                 freeDatesItem.time === knownAppointmentsItem.time) {
                 isFound = true;
                 break;
@@ -16,4 +18,6 @@ function getNewAppointementsOnly(freeDates, knownAppointments) {
     return res;
 }
 
-exports.getNewAppointementsOnly = getNewAppointementsOnly;
+module.exports = {
+    getNewAppointementsOnly
+};

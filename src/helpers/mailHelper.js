@@ -49,5 +49,7 @@ function formatNewAppointmentsContentHTML(newAppointments) {
     return content;
 }
 
-exports.formatNewAppointmentsContent = formatNewAppointmentsContent;
-exports.formatNewAppointmentsContentHTML = formatNewAppointmentsContentHTML;
+module.exports = {
+    formatNewAppointmentsContent,
+    formatNewAppointmentsContentHTML,
+};

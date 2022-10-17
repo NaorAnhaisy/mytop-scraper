@@ -40,6 +40,8 @@ async function deleteReciever(recieverID) {
     });
 };
 
-exports.getAll = getAll;
-exports.saveReciever = saveReciever;
-exports.deleteReciever = deleteReciever;
+module.exports = {
+    getAll,
+    saveReciever,
+    deleteReciever,
+};

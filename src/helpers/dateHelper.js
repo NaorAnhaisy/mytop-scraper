@@ -38,7 +38,14 @@ function getColorOfDay(dayOfWeekIndex) {
     return DAYS_COLORS[dayOfWeekIndex];
 }
 
-exports.getDaysBetweenDates = getDaysBetweenDates;
-exports.getDayOfWeekInHebrew = getDayOfWeekInHebrew;
-exports.getDaysDiff = getDaysDiff;
-exports.getColorOfDay = getColorOfDay;
+function checkTwoDatesEqual(date1, date2) {
+    return date1.toDateString() === date2.toDateString();
+}
+
+module.exports = {
+    getDaysBetweenDates,
+    getDayOfWeekInHebrew,
+    getDaysDiff,
+    getColorOfDay,
+    checkTwoDatesEqual
+};
