@@ -3,7 +3,7 @@ function getNewAppointementsOnly(freeDates, knownAppointments) {
     for (const freeDatesItem of freeDates) {
         let isFound = false;
         for (const knownAppointmentsItem of knownAppointments) {
-            if (freeDatesItem.data === knownAppointmentsItem.data &&
+            if (freeDatesItem.date === knownAppointmentsItem.date &&
                 freeDatesItem.time === knownAppointmentsItem.time) {
                 isFound = true;
                 break;
