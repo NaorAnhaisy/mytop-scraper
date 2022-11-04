@@ -56,10 +56,20 @@ async function deleteArrayOfAppointments(appointmentsArrayIDs) {
     }).clone().catch(function (err) { console.error(err) });
 };
 
+/**
+ * Delete all appointments.
+ */
+async function deleteAllAppointments() {
+    await Appointment.deleteMany({}, function (err) {
+        if (err) throw err;
+    }).clone().catch(function (err) { console.error(err) });
+};
+
 module.exports = {
     getAll,
     getByID,
     saveAppointments,
     deleteAppointment,
     deleteArrayOfAppointments,
+    deleteAllAppointments
 };

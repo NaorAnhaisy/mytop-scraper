@@ -1,12 +1,13 @@
 const nodemailer = require('nodemailer');
-const { formatNewAppointmentsContent, formatNewAppointmentsContentHTML } = require('../helpers/mailHelper');
+const { groupsByDates, formatNewAppointmentsContent, formatNewAppointmentsContentHTML } = require('../helpers/mailHelper');
 const { USERS_TO_EMAIL } = require('../config');
 
 async function sendNewAppointmentsToUser(newAppointments) {
+    const datesGroups = groupsByDates(newAppointments);
     await sendMailToUser(USERS_TO_EMAIL,
         "תורים חדשים נמצאו זמינים אצל נתנאל",
-        formatNewAppointmentsContent(newAppointments),
-        formatNewAppointmentsContentHTML(newAppointments))
+        formatNewAppointmentsContent(newAppointments, datesGroups),
+        formatNewAppointmentsContentHTML(newAppointments, datesGroups))
         .catch(err => console.error(err));
 }
 

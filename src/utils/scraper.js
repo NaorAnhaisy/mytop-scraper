@@ -17,7 +17,7 @@ const NETANEL_WEBSITR_URL = 'https://mytor.co.il/tor.php?i=bmV0YW5lbA==&s=NjQwNQ
 const scrapeMyTor = async () => {
   let freeDates = [];
 
-  const PUPPETEER_LUNCH_DEV_ARGS = { headless: false };
+  const PUPPETEER_LUNCH_DEV_ARGS = { headless: true };
   const PUPPETEER_LUNCH_PROD_ARGS = { headless: true, args: ['--no-sandbox'] };
 
   const args = process.env.NODE_ENV === 'development' ?
