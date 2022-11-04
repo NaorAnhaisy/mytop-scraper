@@ -40,6 +40,7 @@ async function sendMailToUser(reciversEmail, title, content, htmlContnt) {
         console.log(`Email sent successfully to ${reciversEmail}.`);
     } catch (error) {
         console.error("Error while trying to send email:", mailOptions, error);
+        throw error;
     }
 }
 

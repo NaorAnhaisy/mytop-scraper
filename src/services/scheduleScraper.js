@@ -19,12 +19,11 @@ schedule.scheduleJob('*/10 * * * * *', async function () {
             let newAppointments = getNewAppointementsOnly(freeDates, knownAppointments);
             newAppointments.sort((a, b) => new Date(a.date) - new Date(b.date));
             if (newAppointments.length) {
-                await appointmentsService.saveAppointments(newAppointments);
                 await sendNewAppointmentsToUser(newAppointments);
+                await appointmentsService.saveAppointments(newAppointments);
             } else {
                 console.log('No new appointments found :/');
             }
-
             console.log('Schedule website scarping completed successfully.');
         } catch (error) {
             console.error("Schedule website scarping schedule failed: ", error, error.message);
