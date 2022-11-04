@@ -1,13 +1,13 @@
 const puppeteer = require('puppeteer');
 // const puppeteer = require('puppeteer-extra');
 // const StealthPlugin = require('puppeteer-extra-plugin-stealth');
-const { getDaysBetweenDates, getDayOfWeekInHebrew, getColorOfDay } = require('../helpers/dateHelper');
 // puppeteer.use(StealthPlugin());
+const { getDaysBetweenDates, getDayOfWeekInHebrew, getColorOfDay } = require('../helpers/dateHelper');
 
 const GOOD_DAYS_TO_HAIRCUT = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
 const NETANEL_WEBSITR_URL = 'https://mytor.co.il/tor.php?i=bmV0YW5lbA==&s=NjQwNQ==&lang=he';
 
-// For testing:
+// For debuging:
 // const NETANEL_WEBSITR_URL = 'https://mytor.co.il/tor.php?i=ZHZpcjIwMzQ0Mg==&s=NDI=&lang=he';
 
 /**
