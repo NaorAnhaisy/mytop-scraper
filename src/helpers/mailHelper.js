@@ -20,7 +20,7 @@ function getRelevantAppointmentsToUser(user, newAppointments) {
     return newAppointments.filter(newAppointment => {
         const appointmentHour = newAppointment.time.split(':')[0];
         const appointmentHourNumber = isNaN(parseInt(appointmentHour)) ? null : parseInt(appointmentHour);
-        return ((appointmentHourNumber > user.startHour) || (appointmentHourNumber < user.endHour));
+        return ((appointmentHourNumber >= user.startHour) || (appointmentHourNumber <= user.endHour));
     });
 }
 
