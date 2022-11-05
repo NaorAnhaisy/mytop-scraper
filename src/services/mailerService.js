@@ -8,12 +8,12 @@ const {
 const recieversService = require('./recieversService');
 
 async function sendNewAppointmentsEmailToUsers(newAppointments) {
-    const datesGroups = groupAppointmentsByDate(newAppointments);
 
     const allRecievers = await recieversService.getAll();
     await Promise.all(allRecievers.map(async (reciever) => {
         const relevantAppointmentsToUser = getRelevantAppointmentsToUser(reciever, newAppointments);
         if (relevantAppointmentsToUser.length) {
+            const datesGroups = groupAppointmentsByDate(relevantAppointmentsToUser);
             await sendMailToUser(reciever.email,
                 "תורים חדשים נמצאו זמינים אצל נתנאל",
                 formatNewAppointmentsContent(reciever, relevantAppointmentsToUser, datesGroups),
