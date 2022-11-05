@@ -15,7 +15,6 @@ schedule.scheduleJob('*/10 * * * * *', async function () {
         try {
             isScheduleScrapeRunning = true;
             let freeDates = await scraper.scrapeMyTor();
-            // await appointmentsService.deleteAllAppointments();
             let knownAppointments = await appointmentsService.getAll();
             let newAppointments = getNewAppointementsOnly(freeDates, knownAppointments);
             newAppointments.sort((a, b) => new Date(a.date) - new Date(b.date));
