@@ -5,17 +5,10 @@ const {
     formatNewAppointmentsContent,
     formatNewAppointmentsContentHTML
 } = require('../helpers/mailHelper');
-const { USERS_TO_EMAIL } = require('../config');
 const recieversService = require('./recieversService');
 
 async function sendNewAppointmentsEmailToUsers(newAppointments) {
     const datesGroups = groupAppointmentsByDate(newAppointments);
-
-    // await sendMailToUser(USERS_TO_EMAIL,
-    //     "תורים חדשים נמצאו זמינים אצל נתנאל",
-    //     formatNewAppointmentsContent(newAppointments, datesGroups),
-    //     formatNewAppointmentsContentHTML(newAppointments, datesGroups))
-    //     .catch(err => console.error(err));
 
     const allRecievers = await recieversService.getAll();
     await Promise.all(allRecievers.map(async (reciever) => {
