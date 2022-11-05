@@ -65,22 +65,25 @@ function formatNewAppointmentsContent(reciever, newAppointments, datesGroups) {
 }
 
 function formatNewAppointmentsContentHTML(reciever, newAppointments, datesGroups) {
+    const colorStyling = `color: black !important;`;
     const STYLING_TABLE_HEADERS = `style='
         text-align: center;
         font-weight: bold;
         font-size: 15px;
         padding: 10px 20px;
+        ${colorStyling}
     '`;
+
     let today = new Date(); today.setHours(0, 0, 0, 0);
-    let content = `<div dir='rtl' style='color: black;'>
-        <h3>
+    let content = `<div dir='rtl' style='${colorStyling}'>
+        <h3 style='${colorStyling}'>
             שלום${reciever ? (' ' + reciever.name) : ''}, נמצאו תורים חדשים זמינים בימים הבאים:
         </h3>`;
 
     if (datesGroups.size) {
         content += `<ul>`
         for (const [key, value] of datesGroups.entries()) {
-            content += `<li> ${moment(key).format('DD/MM/YYYY')} - יום ${value}
+            content += `<li style='${colorStyling}'> ${moment(key).format('DD/MM/YYYY')} - יום ${value}
             (${getWeeksDiffString(today, key)})</li>`;
         }
         content += `</ul><br />`
@@ -96,7 +99,7 @@ function formatNewAppointmentsContentHTML(reciever, newAppointments, datesGroups
     `;
 
     newAppointments.forEach(appointment => {
-        content += `<tr style='background: ${appointment.dayColor}'>`
+        content += `<tr style='background: ${appointment.dayColor}; ${colorStyling}'>`
         content += "<td>" + moment(appointment.date).format('DD/MM/YYYY') + "</td>"
         content += "<td>" + appointment.hebrewDay + "</td>"
         content += "<td>" + appointment.time + "</td>"
@@ -110,7 +113,7 @@ function formatNewAppointmentsContentHTML(reciever, newAppointments, datesGroups
 
     content += ""
     content += `</table><br />
-        <h3>
+        <h3 style='${colorStyling}'>
             להזכירך, לפי הגדרות המערכת בחרת לקבל התראות על תורים ${getUserTimesString(reciever)}.
         </h3></div>
     `;
