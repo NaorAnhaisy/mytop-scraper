@@ -74,8 +74,7 @@ function checkTwoDatesEqual(date1, date2) {
  * @returns amount of weeks between the two dates
  */
 function getWeeksDiff(date1, date2) {
-    const msInWeek = 1000 * 60 * 60 * 24 * 7;
-    return Math.round(Math.abs(date1 - date2) / msInWeek);
+    return Math.floor(Math.abs(getDaysDiff(date1, date2)) / 7);
 }
 
 /**
