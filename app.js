@@ -9,10 +9,17 @@ var bodyParser = require("body-parser");
 
 var indexRouter = require("./src/routes/index");
 var appointmentsRouter = require("./src/routes/appointments");
-var recieversRouter = require("./src/routes/recievers");
 
+const { isProductionEnv } = require("./src/config");
 require("./src/services/scheduleScraper");
 require("./src/services/scheduleDeleteOldAppointments");
+
+// var recieversService = require("./src/services/recieversService");
+// recieversService.saveReciever({
+//   name: "מעור",
+//   email: "naor.anhaisy123@gmail.com",
+//   startHour: 18
+// });
 
 const START_URL = "/server";
 
@@ -34,9 +41,7 @@ app.use(START_URL + "/", indexRouter);
 app.use(START_URL + "/appointments", appointmentsRouter);
 // app.use(START_URL + "/recievers", recieversRouter);
 
-const dbConnection = process.env.NODE_ENV === 'production' ?
-  process.env.DB_CONNECTION_PROD :
-  process.env.DB_CONNECTION_DEV;
+const dbConnection = isProductionEnv ? process.env.DB_CONNECTION_PROD : process.env.DB_CONNECTION_DEV;
 
 // Connect to MongoDB
 mongoose.connect(

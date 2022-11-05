@@ -1,9 +1,9 @@
 const moment = require('moment');
 const { getWeeksDiffString } = require('./dateHelper');
 
-function groupsByDates(listOfAppointments) {
+function groupAppointmentsByDate(appointmentsArr) {
     const map = new Map();
-    listOfAppointments.forEach(appointment => {
+    appointmentsArr.forEach(appointment => {
         const key = appointment.date;
         const collection = map.get(key);
         if (!collection) {
@@ -14,8 +14,35 @@ function groupsByDates(listOfAppointments) {
     return map;
 }
 
-function formatNewAppointmentsContent(newAppointments, datesGroups) {
-    let content = "תורים חדשים זמינים בימים הבאים:\n";
+function getRelevantAppointmentsToUser(user, newAppointments) {
+    if (!(user.startHour || user.endHour)) return newAppointments;
+
+    return newAppointments.filter(newAppointment => {
+        const appointmentHour = newAppointment.time.split(':')[0];
+        const appointmentHourNumber = isNaN(parseInt(appointmentHour)) ? null : parseInt(appointmentHour);
+        return ((appointmentHourNumber > user.startHour) || (appointmentHourNumber < user.endHour));
+    });
+}
+
+function getUserTimesString(reciever) {
+    let recieverHoursString;
+    if (reciever?.startHour) {
+        if (reciever.endHour) {
+            recieverHoursString = `בין השעות ${reciever.startHour}:00 - ${reciever.endHour}:00`
+        } else {
+            recieverHoursString = `החל מהשעה ${reciever.startHour}:00`;
+        }
+    } else if (reciever?.endHour) {
+        recieverHoursString = `עד השעה ${reciever.endHour}:00`;
+    } else {
+        recieverHoursString = 'בכל שעות היממה';
+    }
+
+    return recieverHoursString;
+}
+
+function formatNewAppointmentsContent(reciever, newAppointments, datesGroups) {
+    let content = `שלום${reciever ? (' ' + reciever.name) : ''}, נמצאו תורים חדשים זמינים בימים הבאים:\n`;
     let today = new Date(); today.setHours(0, 0, 0, 0);
 
     for (const [key, value] of datesGroups.entries()) {
@@ -23,20 +50,31 @@ function formatNewAppointmentsContent(newAppointments, datesGroups) {
         (${getWeeksDiffString(today, key)})\n`;
     }
 
+    content += `\n`;
     newAppointments.forEach(appointment => {
-        content += ("בתאריך: " + moment(appointment.date).format('DD/MM/YYYY'));
-        content += (" ביום: " + appointment.hebrewDay);
-        content += (" בשעה: " + appointment.time);
-        content += (" לינק: " + appointment.link);
-        content += "\n";
+        content += (`בתאריך: ${moment(appointment.date).format('DD/MM/YYYY')}`);
+        content += (` יום: ${appointment.hebrewDay}`);
+        content += (` שעה: ${appointment.time}`);
+        content += (` לינק: ${appointment.link}`);
+        content += `\n`;
     });
 
+    content += `\nלהזכירך, לפי הגדרות המערכת בחרת לקבל התראות על תורים ${getUserTimesString(reciever)}.`
     return content;
 }
 
-function formatNewAppointmentsContentHTML(newAppointments, datesGroups) {
-    let content = "<div dir='rtl'><h3>תורים חדשים זמינים בימים הבאים:</h3>";
+function formatNewAppointmentsContentHTML(reciever, newAppointments, datesGroups) {
+    const STYLING_TABLE_HEADERS = `style='
+        text-align: center;
+        font-weight: bold;
+        font-size: 15px;
+        padding: 10px 20px;
+    '`;
     let today = new Date(); today.setHours(0, 0, 0, 0);
+    let content = `<div dir='rtl' style='color: black;'>
+        <h3>
+            שלום${reciever ? (' ' + reciever.name) : ''}, נמצאו תורים חדשים זמינים בימים הבאים:
+        </h3>`;
 
     if (datesGroups.size) {
         content += `<ul>`
@@ -44,15 +82,8 @@ function formatNewAppointmentsContentHTML(newAppointments, datesGroups) {
             content += `<li> ${moment(key).format('DD/MM/YYYY')} - יום ${value}
             (${getWeeksDiffString(today, key)})</li>`;
         }
-        content += `</ul>`
+        content += `</ul><br />`
     }
-
-    const STYLING_TABLE_HEADERS = `style='
-        text-align: center;
-        font-weight: bold;
-        font-size: 15px;
-        padding: 10px 20px;
-    '`;
 
     content += `<table border='1' cellpadding='8'>
         <tr>
@@ -76,13 +107,18 @@ function formatNewAppointmentsContentHTML(newAppointments, datesGroups) {
         content += "</tr>"
     });
 
-
-    content += "</table></div>"
+    content += ""
+    content += `</table><br />
+        <h3>
+            להזכירך, לפי הגדרות המערכת בחרת לקבל התראות על תורים ${getUserTimesString(reciever)}.
+        </h3></div>
+    `;
     return content;
 }
 
 module.exports = {
-    groupsByDates,
+    groupAppointmentsByDate,
+    getRelevantAppointmentsToUser,
     formatNewAppointmentsContent,
     formatNewAppointmentsContentHTML,
 };

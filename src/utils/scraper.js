@@ -3,6 +3,7 @@ const puppeteer = require('puppeteer');
 // const StealthPlugin = require('puppeteer-extra-plugin-stealth');
 // puppeteer.use(StealthPlugin());
 const { getDaysBetweenDates, getDayOfWeekInHebrew, getColorOfDay } = require('../helpers/dateHelper');
+const { isDevelopmentEnv } = require('../config');
 
 const GOOD_DAYS_TO_HAIRCUT = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
 const NETANEL_WEBSITR_URL = 'https://mytor.co.il/tor.php?i=bmV0YW5lbA==&s=NjQwNQ==&lang=he';
@@ -19,9 +20,7 @@ const scrapeMyTor = async () => {
 
   const PUPPETEER_LUNCH_DEV_ARGS = { headless: true };
   const PUPPETEER_LUNCH_PROD_ARGS = { headless: true, args: ['--no-sandbox'] };
-
-  const args = process.env.NODE_ENV === 'development' ?
-    PUPPETEER_LUNCH_DEV_ARGS : PUPPETEER_LUNCH_PROD_ARGS;
+  const args = isDevelopmentEnv ? PUPPETEER_LUNCH_DEV_ARGS : PUPPETEER_LUNCH_PROD_ARGS;
 
   await puppeteer.launch(args).then(async browser => {
     console.log('Starting...');

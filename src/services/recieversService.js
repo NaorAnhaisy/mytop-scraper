@@ -9,14 +9,21 @@ async function getAll() {
 };
 
 /**
+ * Return specific reciever by ID
+ * @param {String} recieverID
+ * @returns Reciever object by the param reciever ID.
+ */
+ async function getByID(recieverID) {
+    return await Reciever.findById(recieverID);
+};
+
+
+/**
  * Create and save new reciever to database.
  * @param {Object} newReciever new reciever data.
  */
 async function saveReciever(newRecieverData) {
-    const newReciever = new Reciever({
-        name: newRecieverData.name,
-        email: newRecieverData.email
-    });
+    const newReciever = new Reciever(newRecieverData);
 
     await newReciever.save()
         .then(function () {
@@ -26,6 +33,20 @@ async function saveReciever(newRecieverData) {
             console.error(error);
             throw err;
         });
+};
+
+/**
+ * Update one specific reciever.
+ * @param {String} recieverID ID of reciever to update.
+ */
+async function updateReciever(recieverID, updatedRecieverData) {
+    await Reciever.findOneAndUpdate(
+        { _id: recieverID },
+        updatedRecieverData,
+        function (err) {
+            if (err) throw err;
+        }
+    );
 };
 
 /**
@@ -42,6 +63,8 @@ async function deleteReciever(recieverID) {
 
 module.exports = {
     getAll,
+    getByID,
     saveReciever,
+    updateReciever,
     deleteReciever,
 };

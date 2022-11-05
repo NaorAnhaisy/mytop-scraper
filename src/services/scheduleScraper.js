@@ -2,7 +2,8 @@ const schedule = require('node-schedule');
 const scraper = require('../utils/scraper');
 const appointmentsService = require('./appointmentsService');
 const { getNewAppointementsOnly } = require('../helpers/arrayHelper');
-const { sendNewAppointmentsToUser } = require('./mailerService');
+const { sendNewAppointmentsEmailToUsers } = require('./mailerService');
+const { isProductionEnv } = require('../config');
 
 var isScheduleScrapeRunning = false;
 
@@ -15,11 +16,13 @@ schedule.scheduleJob('*/10 * * * * *', async function () {
         try {
             isScheduleScrapeRunning = true;
             let freeDates = await scraper.scrapeMyTor();
+            !isProductionEnv && await appointmentsService.deleteAllAppointments();
             let knownAppointments = await appointmentsService.getAll();
             let newAppointments = getNewAppointementsOnly(freeDates, knownAppointments);
             newAppointments.sort((a, b) => new Date(a.date) - new Date(b.date));
             if (newAppointments.length) {
-                await sendNewAppointmentsToUser(newAppointments);
+                console.log("Found some new appointments:", newAppointments);
+                await sendNewAppointmentsEmailToUsers(newAppointments);
                 await appointmentsService.saveAppointments(newAppointments);
             } else {
                 console.log('No new appointments found :/');
