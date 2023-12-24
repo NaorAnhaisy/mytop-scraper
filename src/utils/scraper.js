@@ -1,15 +1,10 @@
 const puppeteer = require('puppeteer');
-// const puppeteer = require('puppeteer-extra');
-// const StealthPlugin = require('puppeteer-extra-plugin-stealth');
-// puppeteer.use(StealthPlugin());
 const { getDaysBetweenDates, getDayOfWeekInHebrew, getColorOfDay } = require('../helpers/dateHelper');
 const { isDevelopmentEnv } = require('../config');
 
 const GOOD_DAYS_TO_HAIRCUT = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
-const NETANEL_WEBSITR_URL = 'https://mytor.co.il/tor.php?i=bmV0YW5lbA==&s=NjQwNQ==&lang=he';
-
-// For debuging:
-// const NETANEL_WEBSITR_URL = 'https://mytor.co.il/tor.php?i=ZHZpcjIwMzQ0Mg==&s=NDI=&lang=he';
+const MY_TOR_WEBSITR_URL = 'https://mytor.co.il';
+const NETANEL_WEBSITR_URL = `${MY_TOR_WEBSITR_URL}/tor.php?i=bmV0YW5lbA==&s=NjQwNQ==&lang=he`;
 
 /**
  * Scrape My Tor website of the barber shop.
@@ -18,7 +13,7 @@ const NETANEL_WEBSITR_URL = 'https://mytor.co.il/tor.php?i=bmV0YW5lbA==&s=NjQwNQ
 const scrapeMyTor = async () => {
   let freeDates = [];
 
-  const PUPPETEER_LUNCH_DEV_ARGS = { headless: true };
+  const PUPPETEER_LUNCH_DEV_ARGS = { headless: false };
   const PUPPETEER_LUNCH_PROD_ARGS = { headless: true, args: ['--no-sandbox'] };
   const args = isDevelopmentEnv ? PUPPETEER_LUNCH_DEV_ARGS : PUPPETEER_LUNCH_PROD_ARGS;
 
@@ -66,14 +61,23 @@ const scrapeMyTor = async () => {
         await page.waitForNavigation();
 
         // Gets all available links of appointments:
-        const hrefs = await page.$$eval(
-          "body > div > div[class='w3-row-padding w3-grayscale'] > center a",
-          all_a_tags => all_a_tags.map(a => {
+        const buttonsHtmlPath = ".main-content-body > .card > button"
+        let hrefs = await page.$$eval(
+          buttonsHtmlPath,
+          all_buttons_tags => all_buttons_tags.map(button => {
+            const onclickAttributeValue = button.getAttribute('onclick');
+            const hrefMatch = onclickAttributeValue?.match(/'([^']+)'/)[1];
+
             return {
-              "link": a.href, "time": a.innerText
-            }
+              link: `${hrefMatch}`,
+              time: button.innerText.trim()
+            };
           })
         );
+
+        hrefs.forEach(href => {
+          href.link = `${MY_TOR_WEBSITR_URL}/${href.link}`;
+        });
 
         if (hrefs && hrefs.length) {
           console.log(`Found some matching hours:`, hrefs);
